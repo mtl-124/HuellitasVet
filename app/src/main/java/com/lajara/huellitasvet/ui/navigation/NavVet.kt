@@ -32,9 +32,11 @@ import com.lajara.huellitasvet.ui.dueno.FormularioMascotaScreen
 import com.lajara.huellitasvet.ui.dueno.InicioScreen
 import com.lajara.huellitasvet.ui.dueno.LoginScreen
 import com.lajara.huellitasvet.ui.dueno.MascotasScreen
+import com.lajara.huellitasvet.ui.dueno.PedirCitaScreen
 import com.lajara.huellitasvet.ui.dueno.SplashScreen
 import com.lajara.huellitasvet.viewmodel.InicioViewModel
 import com.lajara.huellitasvet.viewmodel.MascotaViewModel
+import com.lajara.huellitasvet.viewmodel.PedirCitaViewModel
 import com.lajara.huellitasvet.viewmodel.SesionViewModel
 import com.lajara.huellitasvet.viewmodel.VetViewModelFactory
 
@@ -171,7 +173,17 @@ fun NavVet(sesionViewModel: SesionViewModel) {
             )
         }
         composable(Rutas.PEDIR_CITA) {
-            PantallaTemporal("Pedir Cita", "Pantalla en desarrollo") { navController.popBackStack() }
+            val app = LocalContext.current.applicationContext as VetApp
+            val vm: PedirCitaViewModel = viewModel(
+                factory = VetViewModelFactory(app.repository, app.preferenciasStore)
+            )
+            PedirCitaScreen(
+                viewModel = vm,
+                onVolver = { navController.popBackStack() },
+                onCitaAgendada = {
+                    navController.navigate(Rutas.MIS_CITAS) { popUpTo(Rutas.INICIO_DUENO) }
+                }
+            )
         }
         composable(Rutas.MIS_CITAS) {
             PantallaTemporal("Mis Citas", "Pantalla en desarrollo") { navController.popBackStack() }
