@@ -33,8 +33,8 @@ object DatosIniciales {
 
         // 3. Mascotas
         val mascotas = listOf(
-            Mascota(id = 1, duenoId = 1, nombre = "Luna", especie = Especie.PERRO.name, raza = "Labrador", anioNacimiento = 2021, peso = 22.5, sexo = Sexo.HEMBRA.name),
-            Mascota(id = 2, duenoId = 1, nombre = "Max", especie = Especie.GATO.name, raza = "Siamés", anioNacimiento = 2022, peso = 4.2, sexo = Sexo.MACHO.name),
+            Mascota(id = 1, duenoId = 1, nombre = "Luna", especie = Especie.GATO.name, raza = "Labrador", anioNacimiento = 2021, peso = 22.5, sexo = Sexo.HEMBRA.name),
+            Mascota(id = 2, duenoId = 1, nombre = "Max", especie = Especie.PERRO.name, raza = "Siamés", anioNacimiento = 2022, peso = 4.2, sexo = Sexo.MACHO.name),
             Mascota(id = 3, duenoId = 2, nombre = "Rocky", especie = Especie.PERRO.name, raza = "Golden Retriever", anioNacimiento = 2020, peso = 30.0, sexo = Sexo.MACHO.name),
             Mascota(id = 4, duenoId = 2, nombre = "Michi", especie = Especie.GATO.name, raza = "Mestizo", anioNacimiento = 2023, peso = 3.5, sexo = Sexo.HEMBRA.name)
         )

@@ -5,6 +5,7 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import com.lajara.huellitasvet.data.local.entity.Usuario
+import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface UsuarioDao {
@@ -16,4 +17,7 @@ interface UsuarioDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertarTodos(lista: List<Usuario>)
+
+    @Query("SELECT * FROM usuarios WHERE id = :id")
+    fun observarPorId(id: Int): Flow<Usuario?>
 }

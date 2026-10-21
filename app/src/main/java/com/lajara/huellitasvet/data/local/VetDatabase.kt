@@ -38,7 +38,7 @@ abstract class VetDatabase : RoomDatabase() {
             INSTANCE ?: Room.databaseBuilder(
                 context.applicationContext,
                 VetDatabase::class.java,
-                "huellitas_v3.db"
+                "huellitas_v4.db"
             )
                 .fallbackToDestructiveMigration()
                 .build().also { INSTANCE = it }

@@ -45,7 +45,7 @@ class VetRepositoryRoom(
     }
 
     override suspend fun servicioTieneCitas(id: Int): Boolean {
-        return db.servicioDao().contar() > 0
+        return db.citaDao().contarPorServicioId(id) > 0
     }
 
     override fun observarMascotasDeDueno(duenoId: Int): Flow<List<Mascota>> {
@@ -150,4 +150,7 @@ class VetRepositoryRoom(
     override fun observarIngresosDesde(fechaInicio: String): Flow<Double> {
         return db.citaDao().ingresosDesde(fechaInicio)
     }
+
+    override fun observarUsuario(id: Int): Flow<Usuario?> = db.usuarioDao().observarPorId(id)
+
 }
