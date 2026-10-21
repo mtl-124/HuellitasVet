@@ -196,35 +196,37 @@ fun InicioScreen(
 }
 
 @Composable
-private fun BarraInferiorInicio(
+internal fun BarraInferiorInicio(
     onMascotas: () -> Unit,
     onCitas: () -> Unit,
-    onPerfil: () -> Unit
+    onPerfil: () -> Unit,
+    seleccion: Int = 0,
+    onInicio: () -> Unit = {}
 ) {
     NavigationBar {
         NavigationBarItem(
-            selected = true,
-            onClick = {},
+            selected = seleccion == 0,
+            onClick = onInicio,
             icon = { Icon(Icons.Filled.Home, contentDescription = "Inicio") },
-            label = { Text("Inicio", fontSize = 12.sp, fontWeight = FontWeight.Bold) }
+            label = { Text("Inicio", fontSize = 12.sp, fontWeight = if (seleccion == 0) FontWeight.Bold else FontWeight.Medium) }
         )
         NavigationBarItem(
-            selected = false,
+            selected = seleccion == 1,
             onClick = onMascotas,
             icon = { Icon(Icons.Filled.Pets, contentDescription = "Mascotas") },
-            label = { Text("Mascotas", fontSize = 12.sp, fontWeight = FontWeight.Medium) }
+            label = { Text("Mascotas", fontSize = 12.sp, fontWeight = if (seleccion == 1) FontWeight.Bold else FontWeight.Medium) }
         )
         NavigationBarItem(
-            selected = false,
+            selected = seleccion == 2,
             onClick = onCitas,
             icon = { Icon(Icons.Filled.CalendarMonth, contentDescription = "Citas") },
-            label = { Text("Citas", fontSize = 12.sp, fontWeight = FontWeight.Medium) }
+            label = { Text("Citas", fontSize = 12.sp, fontWeight = if (seleccion == 2) FontWeight.Bold else FontWeight.Medium) }
         )
         NavigationBarItem(
-            selected = false,
+            selected = seleccion == 3,
             onClick = onPerfil,
             icon = { Icon(Icons.Filled.Person, contentDescription = "Perfil") },
-            label = { Text("Perfil", fontSize = 12.sp, fontWeight = FontWeight.Medium) }
+            label = { Text("Perfil", fontSize = 12.sp, fontWeight = if (seleccion == 3) FontWeight.Bold else FontWeight.Medium) }
         )
     }
 }

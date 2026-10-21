@@ -32,10 +32,12 @@ import com.lajara.huellitasvet.ui.dueno.FormularioMascotaScreen
 import com.lajara.huellitasvet.ui.dueno.InicioScreen
 import com.lajara.huellitasvet.ui.dueno.LoginScreen
 import com.lajara.huellitasvet.ui.dueno.MascotasScreen
+import com.lajara.huellitasvet.ui.dueno.MisCitasScreen
 import com.lajara.huellitasvet.ui.dueno.PedirCitaScreen
 import com.lajara.huellitasvet.ui.dueno.SplashScreen
 import com.lajara.huellitasvet.viewmodel.InicioViewModel
 import com.lajara.huellitasvet.viewmodel.MascotaViewModel
+import com.lajara.huellitasvet.viewmodel.MisCitasViewModel
 import com.lajara.huellitasvet.viewmodel.PedirCitaViewModel
 import com.lajara.huellitasvet.viewmodel.SesionViewModel
 import com.lajara.huellitasvet.viewmodel.VetViewModelFactory
@@ -186,7 +188,18 @@ fun NavVet(sesionViewModel: SesionViewModel) {
             )
         }
         composable(Rutas.MIS_CITAS) {
-            PantallaTemporal("Mis Citas", "Pantalla en desarrollo") { navController.popBackStack() }
+            val app = LocalContext.current.applicationContext as VetApp
+            val vm: MisCitasViewModel = viewModel(
+                factory = VetViewModelFactory(app.repository, app.preferenciasStore)
+            )
+            MisCitasScreen(
+                viewModel = vm,
+                onVolver = { navController.popBackStack() },
+                onNuevaCita = { navController.navigate(Rutas.PEDIR_CITA) },
+                onIrAInicio = { navController.popBackStack(Rutas.INICIO_DUENO, false) },
+                onIrAMascotas = { navController.navigate(Rutas.MASCOTAS) },
+                onIrAPerfil = { navController.navigate(Rutas.PERFIL) }
+            )
         }
         composable(Rutas.ASISTENTE_IA) {
             PantallaTemporal("Asistente IA", "Pantalla en desarrollo") { navController.popBackStack() }
