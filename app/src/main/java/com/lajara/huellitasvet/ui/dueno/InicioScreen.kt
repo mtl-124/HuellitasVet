@@ -70,6 +70,8 @@ fun InicioScreen(
     onIrAAsistenteIa: () -> Unit = {},
     onCerrarSesion: () -> Unit = {},
     onIrAPerfil: () -> Unit = {},
+    onIrAFicha: (Int) -> Unit = {},
+    onAgregarMascota: () -> Unit = {},
     nombreUsuario: String = ""
 ) {
     val mascotas by viewModel.mascotas.collectAsState()
@@ -158,10 +160,10 @@ fun InicioScreen(
                     TarjetaMascotaInicio(
                         nombre = mascota.nombre,
                         especie = mascota.especie,
-                        onClick = onIrAMascotas
+                        onClick = { onIrAFicha(mascota.id) }
                     )
                 }
-                item { TarjetaAgregar(onClick = onIrAMascotas) }
+                item { TarjetaAgregar(onClick = onAgregarMascota) }
             }
 
             Spacer(Modifier.height(24.dp))

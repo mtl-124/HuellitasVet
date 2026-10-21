@@ -21,14 +21,19 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navArgument
 import com.lajara.huellitasvet.VetApp
+import com.lajara.huellitasvet.ui.dueno.FichaMascotaScreen
+import com.lajara.huellitasvet.ui.dueno.FormularioMascotaScreen
 import com.lajara.huellitasvet.ui.dueno.InicioScreen
 import com.lajara.huellitasvet.ui.dueno.LoginScreen
 import com.lajara.huellitasvet.ui.dueno.SplashScreen
 import com.lajara.huellitasvet.viewmodel.InicioViewModel
+import com.lajara.huellitasvet.viewmodel.MascotaViewModel
 import com.lajara.huellitasvet.viewmodel.SesionViewModel
 import com.lajara.huellitasvet.viewmodel.VetViewModelFactory
 
@@ -95,7 +100,51 @@ fun NavVet(sesionViewModel: SesionViewModel) {
                 onIrANuevaCita = { navController.navigate(Rutas.PEDIR_CITA) },
                 onIrAMisCitas = { navController.navigate(Rutas.MIS_CITAS) },
                 onIrAAsistenteIa = { navController.navigate(Rutas.ASISTENTE_IA) },
+                onIrAPerfil = { navController.navigate(Rutas.PERFIL) },
+                onIrAFicha = { id -> navController.navigate(Rutas.fichaMascota(id)) },
+                onAgregarMascota = { navController.navigate(Rutas.formularioMascota()) }
+            )
+        }
+
+        composable(
+            route = Rutas.FICHA_MASCOTA,
+            arguments = listOf(navArgument("id") { type = NavType.IntType })
+        ) { entrada ->
+            val id = entrada.arguments?.getInt("id") ?: 0
+            val app = LocalContext.current.applicationContext as VetApp
+            val vm: MascotaViewModel = viewModel(
+                factory = VetViewModelFactory(app.repository, app.preferenciasStore)
+            )
+            FichaMascotaScreen(
+                viewModel = vm,
+                mascotaId = id,
+                onVolver = { navController.popBackStack() },
+                onPedirCita = { navController.navigate(Rutas.PEDIR_CITA) },
+                onEditar = { navController.navigate(Rutas.formularioMascota(id)) },
+                onIrAInicio = { navController.popBackStack(Rutas.INICIO_DUENO, false) },
+                onIrAMisCitas = { navController.navigate(Rutas.MIS_CITAS) },
                 onIrAPerfil = { navController.navigate(Rutas.PERFIL) }
+            )
+        }
+
+        composable(
+            route = Rutas.FORMULARIO_MASCOTA,
+            arguments = listOf(navArgument("id") {
+                type = NavType.IntType
+                defaultValue = -1
+            })
+        ) { entrada ->
+            val id = entrada.arguments?.getInt("id")?.takeIf { it > 0 }
+            val app = LocalContext.current.applicationContext as VetApp
+            val vm: MascotaViewModel = viewModel(
+                factory = VetViewModelFactory(app.repository, app.preferenciasStore)
+            )
+            FormularioMascotaScreen(
+                viewModel = vm,
+                mascotaId = id,
+                onVolver = { navController.popBackStack() },
+                onGuardado = { navController.popBackStack() },
+                onEliminada = { navController.popBackStack(Rutas.INICIO_DUENO, false) }
             )
         }
 
