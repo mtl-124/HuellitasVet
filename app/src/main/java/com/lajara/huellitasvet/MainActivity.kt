@@ -3,45 +3,50 @@ package com.lajara.huellitasvet
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.activity.enableEdgeToEdge
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.runtime.*
+import com.lajara.huellitasvet.ui.dueno.LoginScreen
+import com.lajara.huellitasvet.ui.dueno.SplashScreen
 import com.lajara.huellitasvet.ui.theme.HuellitasVetTheme
+import com.lajara.huellitasvet.model.Rol
 
 class MainActivity : ComponentActivity() {
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
+
         setContent {
             HuellitasVetTheme {
-                Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    Greeting(
-                        name = "Android",
-                        modifier = Modifier.padding(innerPadding)
-                    )
+
+                var pantalla by remember { mutableStateOf("splash") }
+
+                when (pantalla) {
+
+                    "splash" -> {
+                        SplashScreen(
+                            onRegistrar = {
+                                pantalla = "login"
+                            },
+                            onYaTengoCuenta = {
+                                pantalla = "login"
+                            }
+                        )
+                    }
+
+                    "login" -> {
+                        LoginScreen(
+                            onIngresar = { correo, clave, rol ->
+                                // Aquí después conectaremos el login con el ViewModel
+                            },
+                            onRegistrar = {
+                                // Aquí después conectaremos la pantalla de registro
+                            },
+                            onOlvideClave = {
+                                // Aquí después conectaremos recuperar contraseña
+                            }
+                        )
+                    }
                 }
             }
         }
-    }
-}
-
-@Composable
-fun Greeting(name: String, modifier: Modifier = Modifier) {
-    Text(
-        text = "Hello $name!",
-        modifier = modifier
-    )
-}
-
-@Preview(showBackground = true)
-@Composable
-fun GreetingPreview() {
-    HuellitasVetTheme {
-        Greeting("Android")
     }
 }
