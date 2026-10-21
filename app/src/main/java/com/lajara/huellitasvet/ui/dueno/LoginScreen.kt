@@ -63,7 +63,7 @@ fun LoginScreen(
     var correo by remember(rol) {
         mutableStateOf(if (esDueno) "ana@correo.test" else "vet@huellitas.test")
     }
-    var clave by remember(rol) { mutableStateOf("12345678") }
+    var clave by remember(rol) { mutableStateOf("1234") }
 
     Column(
         modifier = Modifier

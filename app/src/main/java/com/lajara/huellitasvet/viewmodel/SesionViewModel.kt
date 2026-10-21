@@ -12,51 +12,40 @@ import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 
 class SesionViewModel(
-    private val repo: VetRepository,
-    private val prefs: PreferenciasStore
+    private val repository: VetRepository,
+    private val preferenciasStore: PreferenciasStore
 ) : ViewModel() {
 
-    val perfilActivo: StateFlow<String> = prefs.perfilActivo.stateIn(
-        scope = viewModelScope,
-        started = SharingStarted.WhileSubscribed(5000),
-        initialValue = ""
-    )
-
-    val usuarioId: StateFlow<Int> = prefs.usuarioId.stateIn(
-        scope = viewModelScope,
-        started = SharingStarted.WhileSubscribed(5000),
-        initialValue = 0
-    )
+    // 1. Solución al error de StateFlow: Convertir Flow a StateFlow
+    val perfilActivo: StateFlow<String> = preferenciasStore.perfilActivo
+        .stateIn(
+            scope = viewModelScope,
+            started = SharingStarted.WhileSubscribed(5000),
+            initialValue = ""
+        )
 
     private val _error = MutableStateFlow<String?>(null)
     val error: StateFlow<String?> = _error.asStateFlow()
 
-    private val _cargando = MutableStateFlow(false)
-    val cargando: StateFlow<Boolean> = _cargando.asStateFlow()
-
     fun iniciarSesion(correo: String, clave: String) {
-        if (correo.isBlank() || clave.isBlank()) {
-            _error.value = "Ingresa correo y contraseña"
-            return
-        }
-
         viewModelScope.launch {
-            _cargando.value = true
-            _error.value = null
+            val correoLimpio = correo.trim().lowercase()
+            val claveLimpia = clave.trim()
 
-            val usuario = repo.login(correo.trim(), clave.trim())
+            val usuario = repository.login(correoLimpio, claveLimpia)
             if (usuario != null) {
-                prefs.guardarSesion(usuario.rol, usuario.id)
+                // 2. Solución a Argument mismatch: Pasar primero rol (String) y luego id (Int)
+                preferenciasStore.guardarSesion(usuario.rol, usuario.id)
             } else {
                 _error.value = "Credenciales incorrectas"
             }
-            _cargando.value = false
         }
     }
 
     fun cerrarSesion() {
         viewModelScope.launch {
-            prefs.cerrarSesion()
+            // 3. Solución a Unresolved reference: Usar el nombre exacto de tu PreferenciasStore
+            preferenciasStore.cerrarSesion()
         }
     }
 

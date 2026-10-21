@@ -38,8 +38,10 @@ abstract class VetDatabase : RoomDatabase() {
             INSTANCE ?: Room.databaseBuilder(
                 context.applicationContext,
                 VetDatabase::class.java,
-                "huellitasvet.db"
-            ).build().also { INSTANCE = it }
+                "huellitas_v3.db"
+            )
+                .fallbackToDestructiveMigration()
+                .build().also { INSTANCE = it }
         }
     }
 }
