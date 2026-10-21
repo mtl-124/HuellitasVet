@@ -1,18 +1,18 @@
 package com.lajara.huellitasvet.ui.dueno
 
 import androidx.compose.animation.animateColorAsState
-import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
@@ -22,7 +22,6 @@ import androidx.compose.material.icons.outlined.Lock
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Text
@@ -38,6 +37,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.PasswordVisualTransformation
+import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.lajara.huellitasvet.model.Rol
@@ -63,12 +63,13 @@ fun LoginScreen(
     var correo by remember(rol) {
         mutableStateOf(if (esDueno) "ana@correo.test" else "vet@huellitas.test")
     }
-    var clave by remember(rol) { mutableStateOf("1234") }
+    var clave by remember(rol) { mutableStateOf(if (esDueno) "1234" else "admin") }
 
     Column(
         modifier = Modifier
             .fillMaxSize()
             .background(Color.White)
+            .systemBarsPadding()
             .verticalScroll(rememberScrollState())
             .padding(horizontal = 24.dp, vertical = 32.dp)
     ) {
@@ -126,8 +127,8 @@ fun LoginScreen(
             Text("Ingresar", fontSize = 15.sp, fontWeight = FontWeight.Bold)
         }
 
+        Spacer(Modifier.height(20.dp))
         if (esDueno) {
-            Spacer(Modifier.height(20.dp))
             Row(
                 modifier = Modifier.align(Alignment.CenterHorizontally),
                 verticalAlignment = Alignment.CenterVertically
@@ -147,7 +148,6 @@ fun LoginScreen(
                 )
             }
         } else {
-            Spacer(Modifier.height(20.dp))
             Column(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -188,7 +188,7 @@ private fun SelectorRol(rol: Rol, acento: Color, onCambio: (Rol) -> Unit) {
 }
 
 @Composable
-private fun androidx.compose.foundation.layout.RowScope.OpcionRol(
+private fun RowScope.OpcionRol(
     texto: String,
     seleccionado: Boolean,
     acento: Color,
@@ -224,7 +224,7 @@ private fun CampoLogin(
         label = { Text(etiqueta, fontSize = 12.sp) },
         leadingIcon = icono,
         singleLine = true,
-        visualTransformation = if (oculto) PasswordVisualTransformation() else androidx.compose.ui.text.input.VisualTransformation.None,
+        visualTransformation = if (oculto) PasswordVisualTransformation() else VisualTransformation.None,
         shape = RoundedCornerShape(12.dp),
         modifier = Modifier.fillMaxWidth(),
         colors = OutlinedTextFieldDefaults.colors(
