@@ -55,6 +55,7 @@ interface VetRepository {
     fun observarCantidadPorEstado(estado: EstadoCita): Flow<Int>
     fun observarCitasPorServicio(): Flow<List<ConteoServicio>>
     fun observarIngresosDesde(fechaInicio: String): Flow<Double>
+    fun observarAtencionesDesde(fechaInicio: String): Flow<Int>
 
     fun observarUsuario(id: Int): Flow<Usuario?>
 }

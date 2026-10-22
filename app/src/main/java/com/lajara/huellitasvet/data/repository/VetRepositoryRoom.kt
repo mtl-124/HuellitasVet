@@ -151,6 +151,10 @@ class VetRepositoryRoom(
         return db.citaDao().ingresosDesde(fechaInicio)
     }
 
+    override fun observarAtencionesDesde(fechaInicio: String): Flow<Int> {
+        return db.citaDao().atencionesDesde(fechaInicio)
+    }
+
     override fun observarUsuario(id: Int): Flow<Usuario?> = db.usuarioDao().observarPorId(id)
 
 }

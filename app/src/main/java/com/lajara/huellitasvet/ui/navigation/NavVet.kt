@@ -1,6 +1,5 @@
 package com.lajara.huellitasvet.ui.navigation
 
-import com.lajara.huellitasvet.ui.theme.HuellitasVetTheme
 import android.widget.Toast
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -10,6 +9,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -37,9 +37,14 @@ import com.lajara.huellitasvet.ui.dueno.MisCitasScreen
 import com.lajara.huellitasvet.ui.dueno.PedirCitaScreen
 import com.lajara.huellitasvet.ui.dueno.PerfilScreen
 import com.lajara.huellitasvet.ui.dueno.SplashScreen
+import com.lajara.huellitasvet.ui.theme.HuellitasVetTheme
+import com.lajara.huellitasvet.ui.veterinario.AgendaScreen
+import com.lajara.huellitasvet.ui.veterinario.PanelScreen
+import com.lajara.huellitasvet.viewmodel.AgendaViewModel
 import com.lajara.huellitasvet.viewmodel.InicioViewModel
 import com.lajara.huellitasvet.viewmodel.MascotaViewModel
 import com.lajara.huellitasvet.viewmodel.MisCitasViewModel
+import com.lajara.huellitasvet.viewmodel.PanelViewModel
 import com.lajara.huellitasvet.viewmodel.PedirCitaViewModel
 import com.lajara.huellitasvet.viewmodel.SesionViewModel
 import com.lajara.huellitasvet.viewmodel.VetViewModelFactory
@@ -51,6 +56,7 @@ fun NavVet(sesionViewModel: SesionViewModel) {
 
     val perfilActivo by sesionViewModel.perfilActivo.collectAsState()
     val errorMsg by sesionViewModel.error.collectAsState()
+    val modoOscuro by sesionViewModel.modoOscuro.collectAsState()
 
     LaunchedEffect(errorMsg) {
         errorMsg?.let { msg ->
@@ -73,6 +79,15 @@ fun NavVet(sesionViewModel: SesionViewModel) {
                     popUpTo(0) { inclusive = true }
                 }
             }
+        }
+    }
+
+    // Navegación entre pestañas del veterinario (la raíz siempre es el Panel)
+    val irAPanelVet: () -> Unit = { navController.popBackStack(Rutas.VET_HOME, false) }
+    val irATabVet: (String) -> Unit = { ruta ->
+        navController.navigate(ruta) {
+            popUpTo(Rutas.VET_HOME)
+            launchSingleTop = true
         }
     }
 
@@ -159,13 +174,64 @@ fun NavVet(sesionViewModel: SesionViewModel) {
             )
         }
 
+        // ---------- Veterinario (tema azul) ----------
         composable(Rutas.VET_HOME) {
-            PantallaTemporal(
-                titulo = "Panel del Veterinario",
-                subtitulo = "Módulo listo para el Paso 9",
-                textoBoton = "Cerrar sesión",
-                onAccion = { sesionViewModel.cerrarSesion() }
+            val app = LocalContext.current.applicationContext as VetApp
+            val vm: PanelViewModel = viewModel(
+                factory = VetViewModelFactory(app.repository, app.preferenciasStore)
             )
+            TemaVet(modoOscuro) {
+                PanelScreen(
+                    viewModel = vm,
+                    onIrAAgenda = { irATabVet(Rutas.VET_AGENDA) },
+                    onIrAPacientes = { irATabVet(Rutas.VET_PACIENTES) },
+                    onIrAServicios = { irATabVet(Rutas.VET_SERVICIOS) },
+                    onIrAAjustes = { irATabVet(Rutas.VET_AJUSTES) }
+                )
+            }
+        }
+
+        composable(Rutas.VET_AGENDA) {
+            val app = LocalContext.current.applicationContext as VetApp
+            val vm: AgendaViewModel = viewModel(
+                factory = VetViewModelFactory(app.repository, app.preferenciasStore)
+            )
+            TemaVet(modoOscuro) {
+                AgendaScreen(
+                    viewModel = vm,
+                    onVolver = { navController.popBackStack() },
+                    onAtender = {
+                        Toast.makeText(context, "Atención de citas: siguiente paso", Toast.LENGTH_SHORT).show()
+                    },
+                    onIrAPanel = irAPanelVet,
+                    onIrAPacientes = { irATabVet(Rutas.VET_PACIENTES) },
+                    onIrAServicios = { irATabVet(Rutas.VET_SERVICIOS) },
+                    onIrAAjustes = { irATabVet(Rutas.VET_AJUSTES) }
+                )
+            }
+        }
+
+        composable(Rutas.VET_PACIENTES) {
+            TemaVet(modoOscuro) {
+                PantallaTemporal("Pacientes", "Módulo en desarrollo") { navController.popBackStack() }
+            }
+        }
+
+        composable(Rutas.VET_SERVICIOS) {
+            TemaVet(modoOscuro) {
+                PantallaTemporal("Servicios", "Módulo en desarrollo") { navController.popBackStack() }
+            }
+        }
+
+        composable(Rutas.VET_AJUSTES) {
+            TemaVet(modoOscuro) {
+                PantallaTemporal(
+                    titulo = "Ajustes",
+                    subtitulo = "Módulo en desarrollo",
+                    textoBoton = "Cerrar sesión",
+                    onAccion = { sesionViewModel.cerrarSesion() }
+                )
+            }
         }
 
         composable(Rutas.MASCOTAS) {
@@ -222,6 +288,22 @@ fun NavVet(sesionViewModel: SesionViewModel) {
                 onIrAMascotas = { navController.navigate(Rutas.MASCOTAS) },
                 onIrAMisCitas = { navController.navigate(Rutas.MIS_CITAS) }
             )
+        }
+    }
+}
+
+// Envuelve las pantallas del veterinario con el tema azul (claro u oscuro)
+@Composable
+private fun TemaVet(
+    modoOscuro: Boolean,
+    contenido: @Composable () -> Unit
+) {
+    HuellitasVetTheme(darkTheme = modoOscuro, veterinario = true) {
+        Surface(
+            modifier = Modifier.fillMaxSize(),
+            color = MaterialTheme.colorScheme.background
+        ) {
+            contenido()
         }
     }
 }

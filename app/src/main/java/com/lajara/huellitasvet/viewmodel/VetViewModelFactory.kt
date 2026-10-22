@@ -28,6 +28,9 @@ class VetViewModelFactory(
             modelClass.isAssignableFrom(MisCitasViewModel::class.java) -> {
                 MisCitasViewModel(repository, preferenciasStore) as T
             }
+            modelClass.isAssignableFrom(PanelViewModel::class.java) -> {
+                PanelViewModel(repository) as T
+            }
             modelClass.isAssignableFrom(AgendaViewModel::class.java) -> {
                 AgendaViewModel(repository) as T
             }
