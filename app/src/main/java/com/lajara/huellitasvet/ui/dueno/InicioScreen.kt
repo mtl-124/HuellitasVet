@@ -1,5 +1,7 @@
 package com.lajara.huellitasvet.ui.dueno
 
+import com.lajara.huellitasvet.ui.theme.menta
+import com.lajara.huellitasvet.ui.theme.mentaBorde
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -245,7 +247,7 @@ private fun TarjetaProximaCita(proxima: CitaConDetalle?) {
             Text(
                 "No tienes citas agendadas",
                 modifier = Modifier.weight(1f),
-                color = Color.White,
+                color = MaterialTheme.colorScheme.onPrimary,
                 fontSize = 15.sp,
                 fontWeight = FontWeight.Bold
             )
@@ -254,7 +256,7 @@ private fun TarjetaProximaCita(proxima: CitaConDetalle?) {
         Column(modifier = Modifier.weight(1f)) {
             Text(
                 "${proxima.mascota.mascota.nombre} - ${proxima.servicio.nombre}",
-                color = Color.White,
+                color = MaterialTheme.colorScheme.onPrimary,
                 fontSize = 15.sp,
                 fontWeight = FontWeight.Bold
             )
@@ -263,19 +265,19 @@ private fun TarjetaProximaCita(proxima: CitaConDetalle?) {
                 Icon(
                     Icons.Outlined.Schedule,
                     contentDescription = null,
-                    tint = Color.White,
+                    tint = MaterialTheme.colorScheme.onPrimary,
                     modifier = Modifier.size(16.dp)
                 )
                 Spacer(Modifier.width(6.dp))
                 Text(
                     "${formatoFecha(proxima.cita.fecha)} - ${proxima.cita.hora}",
-                    color = Color.White,
+                    color = MaterialTheme.colorScheme.onPrimary,
                     fontSize = 15.sp,
                     fontWeight = FontWeight.Bold
                 )
             }
             Spacer(Modifier.height(8.dp))
-            Surface(shape = CircleShape, color = Color.White) {
+            Surface(shape = CircleShape, color = MaterialTheme.colorScheme.onPrimary) {
                 Text(
                     proxima.cita.estado.lowercase().replaceFirstChar { it.uppercase() },
                     modifier = Modifier.padding(horizontal = 10.dp, vertical = 3.dp),
@@ -289,7 +291,7 @@ private fun TarjetaProximaCita(proxima: CitaConDetalle?) {
             modifier = Modifier
                 .size(54.dp)
                 .clip(RoundedCornerShape(14.dp))
-                .background(Color.White),
+                .background(MaterialTheme.colorScheme.onPrimary),
             contentAlignment = Alignment.Center
         ) {
             CirculoMascota(especie = proxima.mascota.mascota.especie, tamano = 44.dp)
@@ -367,8 +369,8 @@ private fun TarjetaServicio(
         onClick = onClick,
         modifier = modifier,
         shape = RoundedCornerShape(14.dp),
-        colors = CardDefaults.cardColors(containerColor = MentaTarjeta),
-        border = BorderStroke(1.dp, MentaBorde)
+        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.menta),
+        border = BorderStroke(1.dp, MaterialTheme.colorScheme.mentaBorde)
     ) {
         Column(
             modifier = Modifier

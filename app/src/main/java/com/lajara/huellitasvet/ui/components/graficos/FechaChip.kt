@@ -1,5 +1,7 @@
 package com.lajara.huellitasvet.ui.components.graficos
 
+import com.lajara.huellitasvet.ui.theme.tarjeta
+import com.lajara.huellitasvet.ui.theme.bordeSuave
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -34,9 +36,9 @@ fun FechaChip(
         modifier = modifier
             .height(52.dp)
             .clip(forma)
-            .background(if (seleccionada) colores.primary else Color.White)
+            .background(if (seleccionada) colores.primary else colores.tarjeta)
             .border(
-                border = if (seleccionada) BorderStroke(0.dp, Color.Transparent) else BorderStroke(1.dp, GrisBorde),
+                border = if (seleccionada) BorderStroke(0.dp, Color.Transparent) else BorderStroke(1.dp, colores.bordeSuave),
                 shape = forma
             )
             .clickable(onClick = onClick),
@@ -47,13 +49,13 @@ fun FechaChip(
             text = Horarios.nombreDia(fecha),
             fontSize = 12.sp,
             fontWeight = FontWeight.Medium,
-            color = if (seleccionada) Color.White else colores.onSurfaceVariant
+            color = if (seleccionada) colores.onPrimary else colores.onSurfaceVariant
         )
         Text(
             text = fecha.dayOfMonth.toString(),
             fontSize = 18.sp,
             fontWeight = FontWeight.Bold,
-            color = if (seleccionada) Color.White else colores.onBackground
+            color = if (seleccionada) colores.onPrimary else colores.onBackground
         )
     }
 }

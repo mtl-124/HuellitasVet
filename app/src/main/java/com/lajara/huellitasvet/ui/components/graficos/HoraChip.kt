@@ -1,5 +1,8 @@
 package com.lajara.huellitasvet.ui.components.graficos
 
+import com.lajara.huellitasvet.ui.theme.tarjeta
+import com.lajara.huellitasvet.ui.theme.bordeSuave
+import com.lajara.huellitasvet.ui.theme.fondoInactivo
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -31,9 +34,9 @@ fun HoraChip(
     val forma = RoundedCornerShape(10.dp)
     val colores = MaterialTheme.colorScheme
     val fondo = when {
-        deshabilitada -> Color(0xFFEEF0F2)
+        deshabilitada -> colores.fondoInactivo
         seleccionada -> colores.primary
-        else -> Color.White
+        else -> colores.tarjeta
     }
     Box(
         modifier = modifier
@@ -41,7 +44,7 @@ fun HoraChip(
             .clip(forma)
             .background(fondo)
             .border(
-                border = if (deshabilitada || seleccionada) BorderStroke(0.dp, Color.Transparent) else BorderStroke(1.dp, GrisBorde),
+                border = if (deshabilitada || seleccionada) BorderStroke(0.dp, Color.Transparent) else BorderStroke(1.dp, colores.bordeSuave),
                 shape = forma
             )
             .clickable(enabled = !deshabilitada, onClick = onClick),
@@ -54,7 +57,7 @@ fun HoraChip(
             textDecoration = if (deshabilitada) TextDecoration.LineThrough else TextDecoration.None,
             color = when {
                 deshabilitada -> Color(0xFF9CA3AF)
-                seleccionada -> Color.White
+                seleccionada -> colores.onPrimary
                 else -> colores.onBackground
             }
         )

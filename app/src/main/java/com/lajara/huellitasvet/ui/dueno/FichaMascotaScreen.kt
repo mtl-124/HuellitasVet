@@ -1,5 +1,8 @@
 package com.lajara.huellitasvet.ui.dueno
 
+import com.lajara.huellitasvet.ui.theme.tarjeta
+import com.lajara.huellitasvet.ui.theme.menta
+import com.lajara.huellitasvet.ui.theme.fondoPestanas
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -120,7 +123,7 @@ fun FichaMascotaScreen(
                 modifier = Modifier
                     .fillMaxWidth()
                     .clip(RoundedCornerShape(12.dp))
-                    .background(FondoPestanas)
+                    .background(MaterialTheme.colorScheme.fondoPestanas)
                     .padding(4.dp)
             ) {
                 Pestana("Datos", pestana == 0, Modifier.weight(1f)) { pestana = 0 }
@@ -135,7 +138,7 @@ fun FichaMascotaScreen(
                     modifier = Modifier
                         .fillMaxWidth()
                         .clip(RoundedCornerShape(12.dp))
-                        .background(Color.White)
+                        .background(MaterialTheme.colorScheme.tarjeta)
                         .border(1.dp, colores.outlineVariant, RoundedCornerShape(12.dp))
                         .padding(24.dp),
                     contentAlignment = Alignment.Center
@@ -166,7 +169,7 @@ private fun CabeceraMascota(m: Mascota, vacunado: Boolean) {
         modifier = Modifier
             .fillMaxWidth()
             .clip(forma)
-            .background(Color.White)
+            .background(MaterialTheme.colorScheme.tarjeta)
             .border(1.dp, colores.outlineVariant, forma)
             .padding(16.dp),
         verticalAlignment = Alignment.CenterVertically
@@ -188,7 +191,7 @@ private fun CabeceraMascota(m: Mascota, vacunado: Boolean) {
             )
             if (vacunado) {
                 Spacer(Modifier.height(6.dp))
-                Surface(shape = CircleShape, color = MentaChip) {
+                Surface(shape = CircleShape, color = MaterialTheme.colorScheme.menta) {
                     Text(
                         "Vacunado al día",
                         modifier = Modifier.padding(horizontal = 8.dp, vertical = 2.dp),
@@ -215,7 +218,7 @@ private fun Pestana(
         modifier = modifier
             .height(34.dp)
             .clip(forma)
-            .background(if (seleccionada) Color.White else Color.Transparent)
+            .background(if (seleccionada) MaterialTheme.colorScheme.tarjeta else Color.Transparent)
             .then(
                 if (seleccionada) Modifier.border(1.dp, colores.outlineVariant, forma) else Modifier
             )
@@ -239,7 +242,7 @@ private fun TarjetaDatos(m: Mascota) {
         modifier = Modifier
             .fillMaxWidth()
             .clip(forma)
-            .background(Color.White)
+            .background(MaterialTheme.colorScheme.tarjeta)
             .border(1.dp, colores.outlineVariant, forma)
             .padding(horizontal = 16.dp, vertical = 8.dp)
     ) {
@@ -282,7 +285,7 @@ private fun BarraInferiorFicha(
         unselectedIconColor = colores.onSurfaceVariant,
         unselectedTextColor = colores.onSurfaceVariant
     )
-    NavigationBar(containerColor = Color.White) {
+    NavigationBar(containerColor = MaterialTheme.colorScheme.tarjeta) {
         NavigationBarItem(
             selected = false,
             onClick = onInicio,

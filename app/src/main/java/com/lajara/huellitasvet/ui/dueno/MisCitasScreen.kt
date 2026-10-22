@@ -1,5 +1,12 @@
 package com.lajara.huellitasvet.ui.dueno
 
+import com.lajara.huellitasvet.ui.theme.tarjeta
+import com.lajara.huellitasvet.ui.theme.menta
+import com.lajara.huellitasvet.ui.theme.bordeSuave
+import com.lajara.huellitasvet.ui.theme.rojo
+import com.lajara.huellitasvet.ui.theme.ambar
+import com.lajara.huellitasvet.ui.theme.ambarBorde
+import com.lajara.huellitasvet.ui.theme.ambarTexto
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -100,7 +107,7 @@ fun MisCitasScreen(
                 onClick = onNuevaCita,
                 shape = RoundedCornerShape(18.dp),
                 containerColor = colores.primary,
-                contentColor = Color.White
+                contentColor = colores.onPrimary
             ) {
                 Icon(Icons.Filled.Add, contentDescription = "Pedir cita", modifier = Modifier.size(28.dp))
             }
@@ -144,7 +151,7 @@ fun MisCitasScreen(
                         Box(
                             modifier = Modifier
                                 .clip(RoundedCornerShape(14.dp))
-                                .border(BorderStroke(1.dp, GrisBorde), RoundedCornerShape(14.dp))
+                                .border(BorderStroke(1.dp, colores.bordeSuave), RoundedCornerShape(14.dp))
                         ) {
                             CitaCard(
                                 citaConDetalle = cita,
@@ -181,7 +188,7 @@ fun MisCitasScreen(
                     viewModel.cancelar(cita)
                     citaACancelar = null
                 }) {
-                    Text("Sí, cancelar", color = Color(0xFFDC2626), fontWeight = FontWeight.Bold)
+                    Text("Sí, cancelar", color = colores.rojo, fontWeight = FontWeight.Bold)
                 }
             },
             dismissButton = {
@@ -199,7 +206,7 @@ private fun SelectorPestanas(seleccionada: Int, onElegir: (Int) -> Unit) {
         modifier = Modifier
             .fillMaxWidth()
             .clip(forma)
-            .background(MentaTarjeta)
+            .background(colores.menta)
             .padding(4.dp)
     ) {
         listOf("Próximas", "Historial").forEachIndexed { indice, texto ->
@@ -209,7 +216,7 @@ private fun SelectorPestanas(seleccionada: Int, onElegir: (Int) -> Unit) {
                     .weight(1f)
                     .height(38.dp)
                     .clip(RoundedCornerShape(11.dp))
-                    .background(if (activa) Color.White else Color.Transparent)
+                    .background(if (activa) colores.tarjeta else Color.Transparent)
                     .clickable { onElegir(indice) },
                 contentAlignment = Alignment.Center
             ) {
@@ -231,22 +238,22 @@ private fun AvisoCancelacion() {
             .fillMaxWidth()
             .padding(top = 4.dp)
             .clip(RoundedCornerShape(12.dp))
-            .background(AmbarContenedor)
-            .border(BorderStroke(1.dp, AmbarBorde), RoundedCornerShape(12.dp))
+            .background(MaterialTheme.colorScheme.ambar)
+            .border(BorderStroke(1.dp, MaterialTheme.colorScheme.ambarBorde), RoundedCornerShape(12.dp))
             .padding(horizontal = 14.dp, vertical = 14.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
         Icon(
             imageVector = Icons.Outlined.Schedule,
             contentDescription = null,
-            tint = AmbarTexto,
+            tint = MaterialTheme.colorScheme.ambarTexto,
             modifier = Modifier.size(18.dp)
         )
         Spacer(Modifier.width(10.dp))
         Text(
             text = "Puedes cancelar hasta 2 horas antes",
             fontSize = 12.sp,
-            color = AmbarTexto
+            color = MaterialTheme.colorScheme.ambarTexto
         )
     }
 }

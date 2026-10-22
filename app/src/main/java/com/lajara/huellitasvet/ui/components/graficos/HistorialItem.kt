@@ -1,5 +1,6 @@
 package com.lajara.huellitasvet.ui.components.graficos
 
+import com.lajara.huellitasvet.ui.theme.tarjeta
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
@@ -89,7 +90,7 @@ fun HistorialItem(
                 Icon(
                     Icons.Filled.Check,
                     contentDescription = null,
-                    tint = Color.White,
+                    tint = colores.onPrimary,
                     modifier = Modifier.size(12.dp)
                 )
             }
@@ -99,7 +100,7 @@ fun HistorialItem(
             modifier = Modifier
                 .weight(1f)
                 .clip(forma)
-                .background(Color.White)
+                .background(colores.tarjeta)
                 .border(1.dp, colores.outlineVariant, forma)
                 .padding(horizontal = 12.dp, vertical = 10.dp)
         ) {

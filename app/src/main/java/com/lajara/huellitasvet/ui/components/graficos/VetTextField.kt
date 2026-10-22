@@ -1,5 +1,6 @@
 package com.lajara.huellitasvet.ui.components.graficos
 
+import com.lajara.huellitasvet.ui.theme.tarjeta
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Column
@@ -49,7 +50,7 @@ fun VetTextField(
             modifier = Modifier
                 .fillMaxWidth()
                 .clip(forma)
-                .background(Color.White)
+                .background(colores.tarjeta)
                 .border(if (enfocado || error != null) 1.5.dp else 1.dp, colorBorde, forma)
                 .padding(horizontal = 12.dp, vertical = 8.dp)
         ) {

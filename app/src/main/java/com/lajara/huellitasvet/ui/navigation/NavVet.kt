@@ -1,5 +1,6 @@
 package com.lajara.huellitasvet.ui.navigation
 
+import com.lajara.huellitasvet.ui.theme.HuellitasVetTheme
 import android.widget.Toast
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -34,6 +35,7 @@ import com.lajara.huellitasvet.ui.dueno.LoginScreen
 import com.lajara.huellitasvet.ui.dueno.MascotasScreen
 import com.lajara.huellitasvet.ui.dueno.MisCitasScreen
 import com.lajara.huellitasvet.ui.dueno.PedirCitaScreen
+import com.lajara.huellitasvet.ui.dueno.PerfilScreen
 import com.lajara.huellitasvet.ui.dueno.SplashScreen
 import com.lajara.huellitasvet.viewmodel.InicioViewModel
 import com.lajara.huellitasvet.viewmodel.MascotaViewModel
@@ -62,7 +64,7 @@ fun NavVet(sesionViewModel: SesionViewModel) {
             val esVet = perfilActivo.equals("ADMIN", ignoreCase = true) ||
                     perfilActivo.equals("VETERINARIO", ignoreCase = true)
             navController.navigate(if (esVet) Rutas.VET_HOME else Rutas.INICIO_DUENO) {
-                popUpTo(Rutas.SPLASH) { inclusive = true }
+                popUpTo(0) { inclusive = true }
             }
         } else {
             val rutaActual = navController.currentBackStackEntry?.destination?.route
@@ -76,22 +78,26 @@ fun NavVet(sesionViewModel: SesionViewModel) {
 
     NavHost(navController = navController, startDestination = Rutas.SPLASH) {
         composable(Rutas.SPLASH) {
-            SplashScreen(
-                onRegistrar = { navController.navigate(Rutas.LOGIN) },
-                onYaTengoCuenta = { navController.navigate(Rutas.LOGIN) }
-            )
+            HuellitasVetTheme(darkTheme = false) {
+                SplashScreen(
+                    onRegistrar = { navController.navigate(Rutas.LOGIN) },
+                    onYaTengoCuenta = { navController.navigate(Rutas.LOGIN) }
+                )
+            }
         }
 
         composable(Rutas.LOGIN) {
-            LoginScreen(
-                onIngresar = { correo, clave, _ -> sesionViewModel.iniciarSesion(correo, clave) },
-                onRegistrar = {
-                    Toast.makeText(context, "Módulo de Registro en desarrollo", Toast.LENGTH_SHORT).show()
-                },
-                onOlvideClave = {
-                    Toast.makeText(context, "Módulo de Recuperación en desarrollo", Toast.LENGTH_SHORT).show()
-                }
-            )
+            HuellitasVetTheme(darkTheme = false) {
+                LoginScreen(
+                    onIngresar = { correo, clave, _ -> sesionViewModel.iniciarSesion(correo, clave) },
+                    onRegistrar = {
+                        Toast.makeText(context, "Módulo de Registro en desarrollo", Toast.LENGTH_SHORT).show()
+                    },
+                    onOlvideClave = {
+                        Toast.makeText(context, "Módulo de Recuperación en desarrollo", Toast.LENGTH_SHORT).show()
+                    }
+                )
+            }
         }
 
         composable(Rutas.INICIO_DUENO) {
@@ -205,11 +211,16 @@ fun NavVet(sesionViewModel: SesionViewModel) {
             PantallaTemporal("Asistente IA", "Pantalla en desarrollo") { navController.popBackStack() }
         }
         composable(Rutas.PERFIL) {
-            PantallaTemporal(
-                titulo = "Perfil",
-                subtitulo = "Pantalla en desarrollo",
-                textoBoton = "Cerrar sesión",
-                onAccion = { sesionViewModel.cerrarSesion() }
+            val app = LocalContext.current.applicationContext as VetApp
+            val vm: InicioViewModel = viewModel(
+                factory = VetViewModelFactory(app.repository, app.preferenciasStore)
+            )
+            PerfilScreen(
+                viewModel = vm,
+                sesionViewModel = sesionViewModel,
+                onIrAInicio = { navController.popBackStack(Rutas.INICIO_DUENO, false) },
+                onIrAMascotas = { navController.navigate(Rutas.MASCOTAS) },
+                onIrAMisCitas = { navController.navigate(Rutas.MIS_CITAS) }
             )
         }
     }

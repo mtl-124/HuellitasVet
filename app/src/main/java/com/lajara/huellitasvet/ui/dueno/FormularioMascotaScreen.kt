@@ -1,5 +1,7 @@
 package com.lajara.huellitasvet.ui.dueno
 
+import com.lajara.huellitasvet.ui.theme.tarjeta
+import com.lajara.huellitasvet.ui.theme.menta
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -111,7 +113,7 @@ fun FormularioMascotaScreen(
                     Icon(
                         Icons.Filled.Add,
                         contentDescription = null,
-                        tint = Color.White,
+                        tint = MaterialTheme.colorScheme.onPrimary,
                         modifier = Modifier.size(18.dp)
                     )
                 }
@@ -252,14 +254,14 @@ private fun OpcionChip(
     val colores = MaterialTheme.colorScheme
     val forma = RoundedCornerShape(10.dp)
     val fondo = when {
-        !seleccionado -> Color.White
+        !seleccionado -> colores.tarjeta
         solido -> colores.primary
-        else -> MentaSeleccion
+        else -> colores.menta
     }
     val colorBorde = if (seleccionado) colores.primary else colores.outlineVariant
     val colorTexto = when {
         !seleccionado -> colores.onSurfaceVariant
-        solido -> Color.White
+        solido -> colores.onPrimary
         else -> colores.primary
     }
     Box(

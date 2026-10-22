@@ -1,8 +1,13 @@
 package com.lajara.huellitasvet.ui.components.graficos
 
+import com.lajara.huellitasvet.ui.theme.esClaro
+import com.lajara.huellitasvet.ui.theme.ambar
+import com.lajara.huellitasvet.ui.theme.ambarBorde
+import com.lajara.huellitasvet.ui.theme.ambarTexto
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -25,21 +30,30 @@ fun EstadoCitaChip(
     estado: String,
     modifier: Modifier = Modifier
 ) {
+    val claro = MaterialTheme.colorScheme.esClaro
     val fondo: Color
     val borde: Color
     val texto: Color
     when (estado.uppercase()) {
         "CONFIRMADA" -> {
-            fondo = VerdeContenedor; borde = MentaBorde; texto = Color(0xFF047857)
+            fondo = if (claro) VerdeContenedor else Color(0xFF14382B)
+            borde = if (claro) MentaBorde else Color(0xFF245C46)
+            texto = if (claro) Color(0xFF047857) else Color(0xFF6EE7B7)
         }
         "PENDIENTE" -> {
-            fondo = AmbarContenedor; borde = AmbarBorde; texto = AmbarTexto
+            fondo = MaterialTheme.colorScheme.ambar
+            borde = MaterialTheme.colorScheme.ambarBorde
+            texto = MaterialTheme.colorScheme.ambarTexto
         }
         "ATENDIDA" -> {
-            fondo = LavandaSeleccion; borde = Color(0xFFD0C4EE); texto = LavandaIcono
+            fondo = if (claro) LavandaSeleccion else Color(0xFF2E2A4A)
+            borde = if (claro) Color(0xFFD0C4EE) else Color(0xFF4B4478)
+            texto = if (claro) LavandaIcono else Color(0xFFD9D0F5)
         }
         else -> {
-            fondo = Color(0xFFFEE2E2); borde = Color(0xFFFECACA); texto = Color(0xFFB91C1C)
+            fondo = if (claro) Color(0xFFFEE2E2) else Color(0xFF3B1A1A)
+            borde = if (claro) Color(0xFFFECACA) else Color(0xFF6B2B2B)
+            texto = if (claro) Color(0xFFB91C1C) else Color(0xFFFCA5A5)
         }
     }
     Surface(

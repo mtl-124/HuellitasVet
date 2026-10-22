@@ -1,5 +1,8 @@
 package com.lajara.huellitasvet.ui.components
 
+import com.lajara.huellitasvet.ui.theme.tarjeta
+import com.lajara.huellitasvet.ui.theme.menta
+import com.lajara.huellitasvet.ui.theme.rojo
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -56,7 +59,7 @@ fun CitaCard(
         modifier = modifier
             .fillMaxWidth()
             .clip(forma)
-            .background(Color.White)
+            .background(colores.tarjeta)
             .then(
                 if (onClick != null) Modifier.clickable(onClick = onClick) else Modifier
             )
@@ -71,7 +74,7 @@ fun CitaCard(
                 modifier = Modifier
                     .size(44.dp)
                     .clip(RoundedCornerShape(12.dp))
-                    .background(MentaTarjeta),
+                    .background(colores.menta),
                 contentAlignment = Alignment.Center
             ) {
                 Icon(
@@ -108,7 +111,7 @@ fun CitaCard(
                     .padding(end = 14.dp, bottom = 10.dp, start = 8.dp, top = 6.dp),
                 fontSize = 12.sp,
                 fontWeight = FontWeight.Bold,
-                color = Color(0xFFDC2626)
+                color = colores.rojo
             )
         }
     }

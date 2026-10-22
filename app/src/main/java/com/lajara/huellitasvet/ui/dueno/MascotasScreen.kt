@@ -1,5 +1,7 @@
 package com.lajara.huellitasvet.ui.dueno
 
+import com.lajara.huellitasvet.ui.theme.menta
+import com.lajara.huellitasvet.ui.theme.mentaBorde
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -121,8 +123,8 @@ private fun TarjetaMascota(mascota: Mascota, onClick: () -> Unit) {
         onClick = onClick,
         modifier = Modifier.fillMaxWidth(),
         shape = RoundedCornerShape(16.dp),
-        colors = CardDefaults.cardColors(containerColor = MentaTarjeta),
-        border = BorderStroke(1.dp, MentaBorde)
+        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.menta),
+        border = BorderStroke(1.dp, MaterialTheme.colorScheme.mentaBorde)
     ) {
         Row(
             modifier = Modifier

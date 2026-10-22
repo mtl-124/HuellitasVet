@@ -1,5 +1,8 @@
 package com.lajara.huellitasvet.ui.dueno
 
+import com.lajara.huellitasvet.ui.theme.tarjeta
+import com.lajara.huellitasvet.ui.theme.menta
+import com.lajara.huellitasvet.ui.theme.bordeSuave
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -146,9 +149,9 @@ fun PedirCitaScreen(
                         modifier = Modifier
                             .height(46.dp)
                             .clip(RoundedCornerShape(23.dp))
-                            .background(if (sel) MentaTarjeta else Color.White)
+                            .background(if (sel) colores.menta else colores.tarjeta)
                             .border(
-                                if (sel) BorderStroke(2.dp, colores.primary) else BorderStroke(1.dp, GrisBorde),
+                                if (sel) BorderStroke(2.dp, colores.primary) else BorderStroke(1.dp, colores.bordeSuave),
                                 RoundedCornerShape(23.dp)
                             )
                             .clickable { viewModel.elegirMascota(m.id) }
@@ -259,9 +262,9 @@ private fun TarjetaServicio(servicio: Servicio, seleccionado: Boolean, onClick: 
             .fillMaxWidth()
             .heightIn(min = 48.dp)
             .clip(forma)
-            .background(if (seleccionado) MentaTarjeta else Color.White)
+            .background(if (seleccionado) colores.menta else colores.tarjeta)
             .border(
-                if (seleccionado) BorderStroke(2.dp, colores.primary) else BorderStroke(1.dp, GrisBorde),
+                if (seleccionado) BorderStroke(2.dp, colores.primary) else BorderStroke(1.dp, colores.bordeSuave),
                 forma
             )
             .clickable(onClick = onClick)
@@ -311,7 +314,7 @@ private fun ResumenCita(
         modifier = Modifier
             .fillMaxWidth()
             .clip(RoundedCornerShape(12.dp))
-            .background(MentaTarjeta.copy(alpha = 0.6f))
+            .background(colores.menta.copy(alpha = 0.6f))
             .padding(horizontal = 14.dp, vertical = 10.dp)
     ) {
         Text(
