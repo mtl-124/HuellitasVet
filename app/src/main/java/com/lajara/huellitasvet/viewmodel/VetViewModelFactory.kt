@@ -37,6 +37,9 @@ class VetViewModelFactory(
             modelClass.isAssignableFrom(AtenderCitaViewModel::class.java) -> {
                 AtenderCitaViewModel(repository) as T
             }
+            modelClass.isAssignableFrom(PacientesViewModel::class.java) -> {
+                PacientesViewModel(repository) as T
+            }
             else -> throw IllegalArgumentException("ViewModel no reconocido: ${modelClass.name}")
         }
     }

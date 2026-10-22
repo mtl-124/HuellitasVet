@@ -117,6 +117,10 @@ class VetRepositoryRoom(
         return db.citaDao().observarHistorial(mascotaId)
     }
 
+    override fun observarCitasAtendidas(): Flow<List<Cita>> {
+        return db.citaDao().observarAtendidas()
+    }
+
     override suspend fun cambiarEstadoCita(id: Int, estado: EstadoCita) {
         db.citaDao().actualizarEstado(id, estado.name)
     }

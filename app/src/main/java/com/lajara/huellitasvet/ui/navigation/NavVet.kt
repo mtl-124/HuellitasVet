@@ -39,11 +39,15 @@ import com.lajara.huellitasvet.ui.dueno.PerfilScreen
 import com.lajara.huellitasvet.ui.dueno.SplashScreen
 import com.lajara.huellitasvet.ui.theme.HuellitasVetTheme
 import com.lajara.huellitasvet.ui.veterinario.AgendaScreen
+import com.lajara.huellitasvet.ui.veterinario.AtenderCitaScreen
+import com.lajara.huellitasvet.ui.veterinario.PacientesScreen
 import com.lajara.huellitasvet.ui.veterinario.PanelScreen
 import com.lajara.huellitasvet.viewmodel.AgendaViewModel
+import com.lajara.huellitasvet.viewmodel.AtenderCitaViewModel
 import com.lajara.huellitasvet.viewmodel.InicioViewModel
 import com.lajara.huellitasvet.viewmodel.MascotaViewModel
 import com.lajara.huellitasvet.viewmodel.MisCitasViewModel
+import com.lajara.huellitasvet.viewmodel.PacientesViewModel
 import com.lajara.huellitasvet.viewmodel.PanelViewModel
 import com.lajara.huellitasvet.viewmodel.PedirCitaViewModel
 import com.lajara.huellitasvet.viewmodel.SesionViewModel
@@ -200,9 +204,7 @@ fun NavVet(sesionViewModel: SesionViewModel) {
                 AgendaScreen(
                     viewModel = vm,
                     onVolver = { navController.popBackStack() },
-                    onAtender = {
-                        Toast.makeText(context, "Atención de citas: siguiente paso", Toast.LENGTH_SHORT).show()
-                    },
+                    onAtender = { id -> navController.navigate(Rutas.atenderCita(id)) },
                     onIrAPanel = irAPanelVet,
                     onIrAPacientes = { irATabVet(Rutas.VET_PACIENTES) },
                     onIrAServicios = { irATabVet(Rutas.VET_SERVICIOS) },
@@ -211,9 +213,61 @@ fun NavVet(sesionViewModel: SesionViewModel) {
             }
         }
 
-        composable(Rutas.VET_PACIENTES) {
+        composable(
+            route = Rutas.ATENDER_CITA,
+            arguments = listOf(navArgument("id") { type = NavType.IntType })
+        ) { entrada ->
+            val id = entrada.arguments?.getInt("id") ?: 0
+            val app = LocalContext.current.applicationContext as VetApp
+            val vm: AtenderCitaViewModel = viewModel(
+                factory = VetViewModelFactory(app.repository, app.preferenciasStore)
+            )
             TemaVet(modoOscuro) {
-                PantallaTemporal("Pacientes", "Módulo en desarrollo") { navController.popBackStack() }
+                AtenderCitaScreen(
+                    viewModel = vm,
+                    citaId = id,
+                    onVolver = { navController.popBackStack() },
+                    onSalir = { navController.popBackStack() }
+                )
+            }
+        }
+
+        composable(Rutas.VET_PACIENTES) {
+            val app = LocalContext.current.applicationContext as VetApp
+            val vm: PacientesViewModel = viewModel(
+                factory = VetViewModelFactory(app.repository, app.preferenciasStore)
+            )
+            TemaVet(modoOscuro) {
+                PacientesScreen(
+                    viewModel = vm,
+                    onVolver = { navController.popBackStack() },
+                    onIrAFicha = { id -> navController.navigate(Rutas.vetFicha(id)) },
+                    onIrAPanel = irAPanelVet,
+                    onIrAAgenda = { irATabVet(Rutas.VET_AGENDA) },
+                    onIrAServicios = { irATabVet(Rutas.VET_SERVICIOS) },
+                    onIrAAjustes = { irATabVet(Rutas.VET_AJUSTES) }
+                )
+            }
+        }
+
+        composable(
+            route = Rutas.VET_FICHA,
+            arguments = listOf(navArgument("id") { type = NavType.IntType })
+        ) { entrada ->
+            val id = entrada.arguments?.getInt("id") ?: 0
+            val app = LocalContext.current.applicationContext as VetApp
+            val vm: MascotaViewModel = viewModel(
+                factory = VetViewModelFactory(app.repository, app.preferenciasStore)
+            )
+            TemaVet(modoOscuro) {
+                FichaMascotaScreen(
+                    viewModel = vm,
+                    mascotaId = id,
+                    onVolver = { navController.popBackStack() },
+                    onPedirCita = {},
+                    onEditar = {},
+                    modoVet = true
+                )
             }
         }
 

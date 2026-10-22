@@ -38,9 +38,6 @@ import com.lajara.huellitasvet.ui.components.graficos.formatoPeso
 import com.lajara.huellitasvet.viewmodel.MascotaViewModel
 import java.time.LocalDate
 
-private val FondoPestanas = Color(0xFFE6F0EB)
-private val MentaChip = Color(0xFFD1FAE5)
-
 @Composable
 fun FichaMascotaScreen(
     viewModel: MascotaViewModel,
@@ -50,7 +47,8 @@ fun FichaMascotaScreen(
     onEditar: (Int) -> Unit,
     onIrAInicio: () -> Unit = {},
     onIrAMisCitas: () -> Unit = {},
-    onIrAPerfil: () -> Unit = {}
+    onIrAPerfil: () -> Unit = {},
+    modoVet: Boolean = false
 ) {
     val mascota by remember(mascotaId) { viewModel.mascota(mascotaId) }.collectAsState()
     val historial by remember(mascotaId) { viewModel.historial(mascotaId) }.collectAsState()
@@ -62,11 +60,13 @@ fun FichaMascotaScreen(
         containerColor = colores.background,
         topBar = { BarraTitulo(titulo = m?.nombre ?: "Ficha", onVolver = onVolver) },
         bottomBar = {
-            BarraInferiorFicha(
-                onInicio = onIrAInicio,
-                onCitas = onIrAMisCitas,
-                onPerfil = onIrAPerfil
-            )
+            if (!modoVet) {
+                BarraInferiorFicha(
+                    onInicio = onIrAInicio,
+                    onCitas = onIrAMisCitas,
+                    onPerfil = onIrAPerfil
+                )
+            }
         }
     ) { padding ->
         if (m == null) {
@@ -90,31 +90,33 @@ fun FichaMascotaScreen(
         ) {
             CabeceraMascota(m, vacunadoAlDia(historial))
 
-            Spacer(Modifier.height(16.dp))
-            Row(horizontalArrangement = Arrangement.spacedBy(10.dp)) {
-                Button(
-                    onClick = onPedirCita,
-                    modifier = Modifier
-                        .weight(1f)
-                        .height(44.dp),
-                    shape = RoundedCornerShape(12.dp)
-                ) {
-                    Icon(Icons.Filled.EventAvailable, null, modifier = Modifier.size(18.dp))
-                    Spacer(Modifier.width(8.dp))
-                    Text("Pedir cita", fontSize = 13.sp, fontWeight = FontWeight.Bold)
-                }
-                OutlinedButton(
-                    onClick = { onEditar(m.id) },
-                    modifier = Modifier
-                        .weight(1f)
-                        .height(44.dp),
-                    shape = RoundedCornerShape(12.dp),
-                    border = BorderStroke(1.5.dp, colores.primary),
-                    colors = ButtonDefaults.outlinedButtonColors(contentColor = colores.primary)
-                ) {
-                    Icon(Icons.Filled.Edit, null, modifier = Modifier.size(16.dp))
-                    Spacer(Modifier.width(8.dp))
-                    Text("Editar", fontSize = 13.sp, fontWeight = FontWeight.Bold)
+            if (!modoVet) {
+                Spacer(Modifier.height(16.dp))
+                Row(horizontalArrangement = Arrangement.spacedBy(10.dp)) {
+                    Button(
+                        onClick = onPedirCita,
+                        modifier = Modifier
+                            .weight(1f)
+                            .height(44.dp),
+                        shape = RoundedCornerShape(12.dp)
+                    ) {
+                        Icon(Icons.Filled.EventAvailable, null, modifier = Modifier.size(18.dp))
+                        Spacer(Modifier.width(8.dp))
+                        Text("Pedir cita", fontSize = 13.sp, fontWeight = FontWeight.Bold)
+                    }
+                    OutlinedButton(
+                        onClick = { onEditar(m.id) },
+                        modifier = Modifier
+                            .weight(1f)
+                            .height(44.dp),
+                        shape = RoundedCornerShape(12.dp),
+                        border = BorderStroke(1.5.dp, colores.primary),
+                        colors = ButtonDefaults.outlinedButtonColors(contentColor = colores.primary)
+                    ) {
+                        Icon(Icons.Filled.Edit, null, modifier = Modifier.size(16.dp))
+                        Spacer(Modifier.width(8.dp))
+                        Text("Editar", fontSize = 13.sp, fontWeight = FontWeight.Bold)
+                    }
                 }
             }
 

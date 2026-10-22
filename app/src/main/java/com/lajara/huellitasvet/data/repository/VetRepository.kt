@@ -1,5 +1,6 @@
 package com.lajara.huellitasvet.data.repository
 
+import com.lajara.huellitasvet.data.local.entity.Cita
 import com.lajara.huellitasvet.data.local.entity.Mascota
 import com.lajara.huellitasvet.data.local.entity.Servicio
 import com.lajara.huellitasvet.data.local.entity.Usuario
@@ -42,6 +43,7 @@ interface VetRepository {
     fun observarCitasPorFecha(fecha: String): Flow<List<CitaConDetalle>>
     fun observarCita(id: Int): Flow<CitaConDetalle?>
     fun observarHistorial(mascotaId: Int): Flow<List<CitaConDetalle>>
+    fun observarCitasAtendidas(): Flow<List<Cita>>
     suspend fun cambiarEstadoCita(id: Int, estado: EstadoCita)
     suspend fun registrarAtencion(
         citaId: Int,

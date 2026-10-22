@@ -46,6 +46,9 @@ interface CitaDao {
     @Query("SELECT * FROM citas WHERE mascotaId = :mascotaId AND estado = 'ATENDIDA' ORDER BY fecha DESC, hora DESC")
     fun observarHistorial(mascotaId: Int): Flow<List<CitaConDetalle>>
 
+    @Query("SELECT * FROM citas WHERE estado = 'ATENDIDA'")
+    fun observarAtendidas(): Flow<List<Cita>>
+
     @Query("SELECT COUNT(*) FROM citas WHERE fecha = :fecha AND estado != 'CANCELADA'")
     fun contarPorFecha(fecha: String): Flow<Int>
 

@@ -131,8 +131,20 @@ val ColorScheme.tarjeta: Color
         esVeterinario -> Color(0xFF16203A)
         else -> Color(0xFF1A2B24)
     }
-val ColorScheme.menta: Color get() = if (esClaro) MentaTarjeta else Color(0xFF14382B)
-val ColorScheme.mentaBorde: Color get() = if (esClaro) MentaBorde else Color(0xFF245C46)
+val ColorScheme.menta: Color
+    get() = when {
+        esClaro && esVeterinario -> AzulContenedor
+        esClaro -> MentaTarjeta
+        esVeterinario -> Color(0xFF1E2A47)
+        else -> Color(0xFF14382B)
+    }
+val ColorScheme.mentaBorde: Color
+    get() = when {
+        esClaro && esVeterinario -> Color(0xFFBFDBFE)
+        esClaro -> MentaBorde
+        esVeterinario -> Color(0xFF2B3A5E)
+        else -> Color(0xFF245C46)
+    }
 val ColorScheme.bordeSuave: Color
     get() = when {
         esClaro -> GrisBorde
@@ -145,7 +157,13 @@ val ColorScheme.fondoInactivo: Color
         esVeterinario -> Color(0xFF1E2A47)
         else -> Color(0xFF22312B)
     }
-val ColorScheme.fondoPestanas: Color get() = if (esClaro) Color(0xFFE6F0EB) else Color(0xFF15231D)
+val ColorScheme.fondoPestanas: Color
+    get() = when {
+        esClaro && esVeterinario -> Color(0xFFE8EEF9)
+        esClaro -> Color(0xFFE6F0EB)
+        esVeterinario -> Color(0xFF111A2E)
+        else -> Color(0xFF15231D)
+    }
 val ColorScheme.ambar: Color get() = if (esClaro) AmbarContenedor else Color(0xFF3A2F10)
 val ColorScheme.ambarBorde: Color get() = if (esClaro) AmbarBorde else Color(0xFF5C4A14)
 val ColorScheme.ambarTexto: Color get() = if (esClaro) AmbarTexto else Color(0xFFFCD34D)
