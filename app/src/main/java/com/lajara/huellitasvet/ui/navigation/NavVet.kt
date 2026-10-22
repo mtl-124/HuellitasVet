@@ -39,6 +39,9 @@ import com.lajara.huellitasvet.ui.dueno.PerfilScreen
 import com.lajara.huellitasvet.ui.dueno.SplashScreen
 import com.lajara.huellitasvet.ui.theme.HuellitasVetTheme
 import com.lajara.huellitasvet.ui.veterinario.AgendaScreen
+import com.lajara.huellitasvet.ui.veterinario.AjustesScreen
+import com.lajara.huellitasvet.ui.veterinario.FormularioServicioScreen
+import com.lajara.huellitasvet.ui.veterinario.ServiciosScreen
 import com.lajara.huellitasvet.ui.veterinario.AtenderCitaScreen
 import com.lajara.huellitasvet.ui.veterinario.PacientesScreen
 import com.lajara.huellitasvet.ui.veterinario.PanelScreen
@@ -50,6 +53,7 @@ import com.lajara.huellitasvet.viewmodel.MisCitasViewModel
 import com.lajara.huellitasvet.viewmodel.PacientesViewModel
 import com.lajara.huellitasvet.viewmodel.PanelViewModel
 import com.lajara.huellitasvet.viewmodel.PedirCitaViewModel
+import com.lajara.huellitasvet.viewmodel.ServiciosViewModel
 import com.lajara.huellitasvet.viewmodel.SesionViewModel
 import com.lajara.huellitasvet.viewmodel.VetViewModelFactory
 
@@ -272,18 +276,59 @@ fun NavVet(sesionViewModel: SesionViewModel) {
         }
 
         composable(Rutas.VET_SERVICIOS) {
+            val app = LocalContext.current.applicationContext as VetApp
+            val vm: ServiciosViewModel = viewModel(
+                factory = VetViewModelFactory(app.repository, app.preferenciasStore)
+            )
             TemaVet(modoOscuro) {
-                PantallaTemporal("Servicios", "Módulo en desarrollo") { navController.popBackStack() }
+                ServiciosScreen(
+                    viewModel = vm,
+                    onVolver = { navController.popBackStack() },
+                    onNuevo = { navController.navigate(Rutas.formularioServicio()) },
+                    onEditar = { id -> navController.navigate(Rutas.formularioServicio(id)) },
+                    onIrAPanel = irAPanelVet,
+                    onIrAAgenda = { irATabVet(Rutas.VET_AGENDA) },
+                    onIrAPacientes = { irATabVet(Rutas.VET_PACIENTES) },
+                    onIrAAjustes = { irATabVet(Rutas.VET_AJUSTES) }
+                )
+            }
+        }
+
+        composable(
+            route = Rutas.FORMULARIO_SERVICIO,
+            arguments = listOf(navArgument("id") {
+                type = NavType.IntType
+                defaultValue = -1
+            })
+        ) { entrada ->
+            val id = entrada.arguments?.getInt("id")?.takeIf { it > 0 }
+            val app = LocalContext.current.applicationContext as VetApp
+            val vm: ServiciosViewModel = viewModel(
+                factory = VetViewModelFactory(app.repository, app.preferenciasStore)
+            )
+            TemaVet(modoOscuro) {
+                FormularioServicioScreen(
+                    viewModel = vm,
+                    servicioId = id,
+                    onVolver = { navController.popBackStack() }
+                )
             }
         }
 
         composable(Rutas.VET_AJUSTES) {
+            val app = LocalContext.current.applicationContext as VetApp
+            val vm: InicioViewModel = viewModel(
+                factory = VetViewModelFactory(app.repository, app.preferenciasStore)
+            )
             TemaVet(modoOscuro) {
-                PantallaTemporal(
-                    titulo = "Ajustes",
-                    subtitulo = "Módulo en desarrollo",
-                    textoBoton = "Cerrar sesión",
-                    onAccion = { sesionViewModel.cerrarSesion() }
+                AjustesScreen(
+                    viewModel = vm,
+                    sesionViewModel = sesionViewModel,
+                    onVolver = { navController.popBackStack() },
+                    onIrAPanel = irAPanelVet,
+                    onIrAAgenda = { irATabVet(Rutas.VET_AGENDA) },
+                    onIrAPacientes = { irATabVet(Rutas.VET_PACIENTES) },
+                    onIrAServicios = { irATabVet(Rutas.VET_SERVICIOS) }
                 )
             }
         }

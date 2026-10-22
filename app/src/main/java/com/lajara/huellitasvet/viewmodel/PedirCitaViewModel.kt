@@ -38,6 +38,9 @@ class PedirCitaViewModel(
     val servicios: StateFlow<List<Servicio>> = repository.observarServiciosActivos()
         .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), emptyList())
 
+    val aceptaCitas: StateFlow<Boolean> = preferenciasStore.aceptarCitas
+        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), true)
+
     private val _mascotaId = MutableStateFlow<Int?>(null)
     val mascotaId: StateFlow<Int?> = _mascotaId.asStateFlow()
 
@@ -89,6 +92,10 @@ class PedirCitaViewModel(
         }
 
         viewModelScope.launch {
+            if (!preferenciasStore.aceptarCitas.first()) {
+                _mensaje.value = "La clínica no está recibiendo citas"
+                return@launch
+            }
             // Se vuelve a consultar: el horario pudo ocuparse mientras tanto
             val ocupadas = repository.observarHorasOcupadas(fecha).first()
             if (hora in ocupadas || Horarios.yaPaso(fecha, hora)) {

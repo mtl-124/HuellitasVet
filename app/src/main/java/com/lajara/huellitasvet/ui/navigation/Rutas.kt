@@ -19,6 +19,7 @@ object Rutas {
     const val FICHA_MASCOTA = "ficha_mascota/{id}"
     const val ATENDER_CITA = "atender_cita/{id}"
     const val VET_FICHA = "vet_ficha/{id}"
+    const val FORMULARIO_SERVICIO = "formulario_servicio?id={id}"
 
     fun formularioMascota(id: Int? = null) =
         if (id == null) "formulario_mascota" else "formulario_mascota?id=$id"
@@ -28,4 +29,7 @@ object Rutas {
     fun atenderCita(id: Int) = "atender_cita/$id"
 
     fun vetFicha(id: Int) = "vet_ficha/$id"
+
+    fun formularioServicio(id: Int? = null) =
+        if (id == null) "formulario_servicio" else "formulario_servicio?id=$id"
 }

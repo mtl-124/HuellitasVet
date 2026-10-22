@@ -59,6 +59,8 @@ import com.lajara.huellitasvet.ui.components.graficos.FechaChip
 import com.lajara.huellitasvet.ui.components.graficos.HoraChip
 import com.lajara.huellitasvet.ui.theme.GrisBorde
 import com.lajara.huellitasvet.ui.theme.MentaTarjeta
+import com.lajara.huellitasvet.ui.theme.ambar
+import com.lajara.huellitasvet.ui.theme.ambarTexto
 import com.lajara.huellitasvet.viewmodel.PedirCitaViewModel
 import java.time.LocalDate
 import java.util.Locale
@@ -78,6 +80,7 @@ fun PedirCitaScreen(
     val hora by viewModel.hora.collectAsState()
     val ocupadas by viewModel.horasOcupadas.collectAsState()
     val mensaje by viewModel.mensaje.collectAsState()
+    val aceptaCitas by viewModel.aceptaCitas.collectAsState()
 
     val snackbar = remember { SnackbarHostState() }
     LaunchedEffect(mensaje) {
@@ -107,6 +110,20 @@ fun PedirCitaScreen(
                     .navigationBarsPadding()
                     .padding(horizontal = 20.dp, vertical = 10.dp)
             ) {
+                if (!aceptaCitas) {
+                    Text(
+                        text = "La clínica no está recibiendo citas",
+                        fontSize = 13.sp,
+                        fontWeight = FontWeight.Bold,
+                        color = colores.ambarTexto,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .clip(RoundedCornerShape(12.dp))
+                            .background(colores.ambar)
+                            .padding(12.dp)
+                    )
+                    Spacer(Modifier.height(10.dp))
+                }
                 if (listo) {
                     ResumenCita(
                         mascota = mascotaElegida.nombre,
@@ -119,7 +136,7 @@ fun PedirCitaScreen(
                 }
                 Button(
                     onClick = { viewModel.confirmar(onCitaAgendada) },
-                    enabled = listo,
+                    enabled = listo && aceptaCitas,
                     modifier = Modifier
                         .fillMaxWidth()
                         .height(52.dp),

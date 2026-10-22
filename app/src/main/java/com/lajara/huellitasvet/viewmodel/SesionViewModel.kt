@@ -32,6 +32,9 @@ class SesionViewModel(
     val recordatorios: StateFlow<Boolean> = preferenciasStore.notificaciones
         .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), true)
 
+    val aceptarCitas: StateFlow<Boolean> = preferenciasStore.aceptarCitas
+        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), true)
+
     private val _error = MutableStateFlow<String?>(null)
     val error: StateFlow<String?> = _error.asStateFlow()
 
@@ -63,6 +66,10 @@ class SesionViewModel(
 
     fun cambiarRecordatorios(activo: Boolean) {
         viewModelScope.launch { preferenciasStore.guardarNotificaciones(activo) }
+    }
+
+    fun cambiarAceptarCitas(activo: Boolean) {
+        viewModelScope.launch { preferenciasStore.guardarAceptarCitas(activo) }
     }
 
     // Alterna entre perfil Dueño (CLIENTE) y Veterinario (ADMIN) con la misma cuenta

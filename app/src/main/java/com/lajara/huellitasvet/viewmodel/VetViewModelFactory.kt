@@ -40,6 +40,9 @@ class VetViewModelFactory(
             modelClass.isAssignableFrom(PacientesViewModel::class.java) -> {
                 PacientesViewModel(repository) as T
             }
+            modelClass.isAssignableFrom(ServiciosViewModel::class.java) -> {
+                ServiciosViewModel(repository) as T
+            }
             else -> throw IllegalArgumentException("ViewModel no reconocido: ${modelClass.name}")
         }
     }
